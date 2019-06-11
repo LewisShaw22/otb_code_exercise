@@ -7,10 +7,10 @@ RSpec.describe "Jobs" do
     context "blank dependeny graph" do
       let(:input) { "" }
 
-        it "returns an empty sequence" do
-          is_expected.to be_empty
-        end
+      it "returns an empty sequence" do
+        is_expected.to be_empty
       end
+    end
 
     context "given one job with no dependencies" do
       let(:input) do
@@ -18,10 +18,11 @@ RSpec.describe "Jobs" do
           a =>
         INPUT
       end
-        it "returns the correct non-dependent job" do
-          is_expected.to contain_exactly("a")
-        end
+
+      it "returns the correct non-dependent job" do
+        is_expected.to contain_exactly("a")
       end
+    end
 
     context "given multiple jobs with no dependencies" do
       let(:input) do
@@ -31,10 +32,11 @@ RSpec.describe "Jobs" do
           c =>
         INPUT
       end
-        it "returns the correct non-dependent jobs" do
-          is_expected.to contain_exactly("a","b","c")
-        end
+
+      it "returns the correct non-dependent jobs" do
+        is_expected.to contain_exactly("a", "b", "c")
       end
+    end
 
     context "given multiple jobs with one dependencies" do
       let(:input) do
@@ -44,11 +46,12 @@ RSpec.describe "Jobs" do
           c =>
         INPUT
       end
-        it "returns the correct dependent job" do
-          expect(result.index("c")).to be < result.index("b")
-          is_expected.to contain_exactly("a","b","c")
-        end
+
+      it "returns the correct dependent job" do
+        expect(result.index("c")).to be < result.index("b")
+        is_expected.to contain_exactly("a", "b", "c")
       end
+    end
 
     context "given multiple jobs with multiple dependencies" do
       let(:input) do
@@ -61,14 +64,15 @@ RSpec.describe "Jobs" do
           f =>
         INPUT
       end
-        it "returns the correct dependent jobs" do
-          expect(result.index("a")).to be < result.index("d")
-          expect(result.index("b")).to be < result.index("e")
-          expect(result.index("c")).to be < result.index("b")
-          expect(result.index("f")).to be < result.index("c")
-          is_expected.to contain_exactly("a","b","c","d","e","f")
-        end
+
+      it "returns the correct dependent jobs" do
+        expect(result.index("a")).to be < result.index("d")
+        expect(result.index("b")).to be < result.index("e")
+        expect(result.index("c")).to be < result.index("b")
+        expect(result.index("f")).to be < result.index("c")
+        is_expected.to contain_exactly("a", "b", "c", "d", "e", "f")
       end
+    end
 
     context "given a graph containing a self-dependent job" do
       let(:input) do
@@ -78,6 +82,7 @@ RSpec.describe "Jobs" do
           c => c
         INPUT
       end
+
       it "raises a self-dependency error" do
         expect { subject }.to raise_error(Jobs::SelfDependencyError)
       end

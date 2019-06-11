@@ -1,6 +1,6 @@
 require "tsort"
 
-# extension of the hash class
+# Extension of the hash class
 
 class Hash
   include TSort
@@ -23,23 +23,25 @@ class Jobs
   end
 
   private
+
   def split_input(input)
     map = {}
     lines = input.split("\n")
-    #splits the job and the dependency apart
+
+    # Splits the job and the dependency apart
     lines.each do |line|
       job, depen = line.split("=>").map(&:strip)
 
       raise(SelfDependencyError, "Jobs can't depend on themselves") if job == depen
 
-    #removes nil & removes empty strings from the dependency array
-    if depen.nil? || depen.empty?
-      map[job] = []
-    else
-      map[job] = [depen]
+      # Removes nil & removes empty strings from the dependency array
+      if depen.nil? || depen.empty?
+        map[job] = []
+      else
+        map[job] = [depen]
+      end
     end
 
-  end
     map
   end
 end
