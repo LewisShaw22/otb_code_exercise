@@ -11,6 +11,7 @@ class Hash
 end
 
 class Jobs
+  SelfDependencyError = Class.new(StandardError)
 
   def sort(input)
     job_list = split_input(input)
@@ -24,6 +25,9 @@ class Jobs
     #splits the job and the dependency apart
     lines.each do |line|
       job, depen = line.split("=>").map(&:strip)
+
+      raise(SelfDependencyError, "Jobs can't depend on themselves") if job == depen
+
     #removes nil & removes empty strings from the dependency array
     if depen.nil? || depen.empty?
       map[job] = []

@@ -69,5 +69,18 @@ RSpec.describe "Jobs" do
           is_expected.to contain_exactly("a","b","c","d","e","f")
         end
       end
+
+    context "given a graph containing a self-dependent job" do
+      let(:input) do
+        <<~INPUT
+          a =>
+          b =>
+          c => c
+        INPUT
+      end
+      it "raises a self-dependency error" do
+        expect { subject }.to raise_error(Jobs::SelfDependencyError)
+      end
+    end
   end
 end
