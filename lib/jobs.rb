@@ -12,10 +12,14 @@ end
 
 class Jobs
   SelfDependencyError = Class.new(StandardError)
+  CircularDependencyError = Class.new(StandardError)
 
   def sort(input)
     job_list = split_input(input)
+
     job_list.tsort
+  rescue TSort::Cyclic
+    raise(CircularDependencyError, "Jobs can’t have circular dependencies")
   end
 
   private

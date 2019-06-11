@@ -82,5 +82,22 @@ RSpec.describe "Jobs" do
         expect { subject }.to raise_error(Jobs::SelfDependencyError)
       end
     end
+
+    context "given a graph containing circular dependencies" do
+      let(:input) do
+        <<~INPUT
+          a =>
+          b => c
+          c => f
+          d => a
+          e =>
+          f => b
+        INPUT
+      end
+
+      it "raises a circular dependency error" do
+        expect { subject }.to raise_error(Jobs::CircularDependencyError)
+      end
+    end
   end
 end
